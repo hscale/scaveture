@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.center {
+		  text-align: center;
+		}
+	</ui:style>
+	<g:HTMLPanel ui:field="panel">
+		<g:VerticalPanel>
+			<g:Label addStyleNames='{style.center}' ui:field="descriptionLabel" />
+			<g:Anchor width="100%" ui:field="foundLink" />
+			<g:HTML><br/></g:HTML>
+			<g:Hyperlink width="100%" ui:field="submissionsLink" addStyleNames='{style.center}' />
+		</g:VerticalPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

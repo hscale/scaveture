@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+  
+  <!-- Servlets -->
+  <servlet>
+    <servlet-name>huntServlet</servlet-name>
+    <servlet-class>com.scaveture.server.HuntServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>submissionServlet</servlet-name>
+    <servlet-class>com.scaveture.server.SubmissionServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>huntServlet</servlet-name>
+    <url-pattern>/scaveture/hunt</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>submissionServlet</servlet-name>
+    <url-pattern>/scaveture/submission</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>Scaveture.html</welcome-file>
+  </welcome-file-list>
+
+</web-app>

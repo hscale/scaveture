@@ -1,0 +1,22 @@
+This is the mobile app component of scaveture, which is an Android app.
+
+Scaveture is prototype I wrote in mid 2011, with the intention of 
+demo-ing at a Startup Weekend or similar event. That never panned 
+out, but the prototype works, so I figured I'd share the code with 
+whomever cared to re-use it. The code itself is crap, some of the 
+ugliest I've ever written, but it proved a concept and may be 
+educational to anyone trying to do something similar.
+
+As for the concept I endeavored to prove, the idea was to build a 
+site + mobile app that would serve as a device-centric scavenger 
+hunt. Users could create a new hunt on the site, then players 
+could take pictures of items in the real world and upload them to 
+the game. Players could join games anonymously, and eventually 
+you'd build up a catalog of real world items, indexed for search.
+Over the next couple of years, companies like Foursqaure and 
+Findery began taking a similar approach: using games to index 
+the real world for search. While it was nice to see my vision 
+validated in this way, it was bittersweet in that my idea, as 
+pitched to Startup Weekend Seattle 2011, was not chosen for 
+the implementation phase. Nope, the participants of that SW 
+were much more excited about "AirBnB for dogs". Alas.

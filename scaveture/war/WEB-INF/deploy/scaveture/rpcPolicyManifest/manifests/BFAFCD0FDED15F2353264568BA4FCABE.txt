@@ -1,0 +1,2 @@
+serviceClass: com.scaveture.client.HuntService
+path: 57AEDB5E3F82B59410185AFA90D76834.gwt.rpc

@@ -1,0 +1,3 @@
+# Module scaveture
+# RPC service class, partial path of RPC policy file
+com.scaveture.client.HuntService, 57AEDB5E3F82B59410185AFA90D76834.gwt.rpc

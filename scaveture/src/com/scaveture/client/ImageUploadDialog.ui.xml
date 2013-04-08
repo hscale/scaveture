@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.gwt-DialogBox-Big {
+		  font-size: 16px;
+  		  margin: 6px;
+		}
+	</ui:style>
+	<g:FormPanel ui:field='uploadForm'>
+		<g:HTMLPanel>
+			<g:FileUpload ui:field='upload' name='upload' width='90%' />
+			<g:Button ui:field='cancelButton'>Cancel</g:Button>
+			<g:Button ui:field='uploadButton'>Upload</g:Button>
+		</g:HTMLPanel>
+	</g:FormPanel>
+</ui:UiBinder> 

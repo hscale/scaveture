@@ -1,0 +1,10 @@
+<!-- Indices written at Sun, 7 Apr 2013 13:11:07 PDT -->
+
+<datastore-indexes>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Submission" ancestor="true" source="auto">
+        <property name="submissions_INTEGER_IDX" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>

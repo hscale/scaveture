@@ -35,188 +35,188 @@ import java.net.URL;
 import java.util.regex.Pattern;
 
 public class Picture extends Activity {
-	private SurfaceView preview = null;
-	private SurfaceHolder previewHolder = null;
-	private Camera camera = null;
-	private boolean inPreview = false;
-	private String queryString;
-	public static final String PATH = "path";
-	public static final String ID = "id";
-	public static final String LATITUDE = "lat";
-	public static final String LONGITUDE = "long";
+    private SurfaceView preview = null;
+    private SurfaceHolder previewHolder = null;
+    private Camera camera = null;
+    private boolean inPreview = false;
+    private String queryString;
+    public static final String PATH = "path";
+    public static final String ID = "id";
+    public static final String LATITUDE = "lat";
+    public static final String LONGITUDE = "long";
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		
-		setContentView(R.layout.surface);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        
+        setContentView(R.layout.surface);
 
-		preview = (SurfaceView) findViewById(R.id.preview);
-		previewHolder = preview.getHolder();
-		previewHolder.addCallback(surfaceCallback);
-		previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-		String requestUrl = this.getIntent().getCharSequenceExtra(Main.REQUEST_URL_KEY).toString();
-		android.util.Log.d("Picture.onCreate", "requestUrl is: " + requestUrl);
-		try {
-			URL url = new URL(requestUrl);
-			queryString = url.getQuery();
-		} catch (MalformedURLException e) {
-			android.util.Log.e("Picture.onCreate", "Failed to construct URL from " + requestUrl, e);
-			String[] parts = requestUrl.split(Pattern.quote("?"));
-			if(parts.length == 2) {
-				queryString = parts[0];
-			}
-			else {
-				queryString = "";
-			}
-		}
-		android.util.Log.d("Picture.onCreate", "queryString is: " + queryString);
-	}
+        preview = (SurfaceView) findViewById(R.id.preview);
+        previewHolder = preview.getHolder();
+        previewHolder.addCallback(surfaceCallback);
+        previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        String requestUrl = this.getIntent().getCharSequenceExtra(Main.REQUEST_URL_KEY).toString();
+        android.util.Log.d("Picture.onCreate", "requestUrl is: " + requestUrl);
+        try {
+            URL url = new URL(requestUrl);
+            queryString = url.getQuery();
+        } catch (MalformedURLException e) {
+            android.util.Log.e("Picture.onCreate", "Failed to construct URL from " + requestUrl, e);
+            String[] parts = requestUrl.split(Pattern.quote("?"));
+            if(parts.length == 2) {
+                queryString = parts[0];
+            }
+            else {
+                queryString = "";
+            }
+        }
+        android.util.Log.d("Picture.onCreate", "queryString is: " + queryString);
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
+    @Override
+    public void onResume() {
+        super.onResume();
 
-		camera = Camera.open();
-	}
+        camera = Camera.open();
+    }
 
-	@Override
-	public void onPause() {
-		if (inPreview) {
-			camera.stopPreview();
-		}
+    @Override
+    public void onPause() {
+        if (inPreview) {
+            camera.stopPreview();
+        }
 
-		camera.release();
-		camera = null;
-		inPreview = false;
+        camera.release();
+        camera = null;
+        inPreview = false;
 
-		super.onPause();
-	}
+        super.onPause();
+    }
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_CAMERA || keyCode == KeyEvent.KEYCODE_SEARCH) {
-			if (inPreview) {
-				camera.takePicture(null, null, photoCallback);
-				inPreview = false;
-			}
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_CAMERA || keyCode == KeyEvent.KEYCODE_SEARCH) {
+            if (inPreview) {
+                camera.takePicture(null, null, photoCallback);
+                inPreview = false;
+            }
 
-			return (true);
-		}
+            return (true);
+        }
 
-		return (super.onKeyDown(keyCode, event));
-	}
+        return (super.onKeyDown(keyCode, event));
+    }
 
-	private Camera.Size getBestPreviewSize(int width, int height, Camera.Parameters parameters) {
-		Camera.Size result = null;
+    private Camera.Size getBestPreviewSize(int width, int height, Camera.Parameters parameters) {
+        Camera.Size result = null;
 
-		for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
-			if (size.width <= width && size.height <= height) {
-				if (result == null) {
-					result = size;
-				} else {
-					int resultDelta = width - result.width + height - result.height;
-					int newDelta = width - size.width + height - size.height;
+        for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
+            if (size.width <= width && size.height <= height) {
+                if (result == null) {
+                    result = size;
+                } else {
+                    int resultDelta = width - result.width + height - result.height;
+                    int newDelta = width - size.width + height - size.height;
 
-					if (newDelta < resultDelta) {
-						result = size;
-					}
-				}
-			}
-		}
+                    if (newDelta < resultDelta) {
+                        result = size;
+                    }
+                }
+            }
+        }
 
-		return (result);
-	}
+        return (result);
+    }
 
-	SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
-		public void surfaceCreated(SurfaceHolder holder) {
-			try {
-				camera.setPreviewDisplay(previewHolder);
-			} catch (Throwable t) {
-				Log.e("Picture-surfaceCallback",
-						"Exception in setPreviewDisplay()", t);
-				Toast.makeText(Picture.this, t.getMessage(),
-						Toast.LENGTH_LONG).show();
-			}
-		}
+    SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
+        public void surfaceCreated(SurfaceHolder holder) {
+            try {
+                camera.setPreviewDisplay(previewHolder);
+            } catch (Throwable t) {
+                Log.e("Picture-surfaceCallback",
+                        "Exception in setPreviewDisplay()", t);
+                Toast.makeText(Picture.this, t.getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
 
-		public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-			Camera.Parameters parameters = camera.getParameters();
-			parameters.setRotation(180); // Jason: hack, my camera renders this upside down
-			Camera.Size size = getBestPreviewSize(width, height, parameters);
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            Camera.Parameters parameters = camera.getParameters();
+            parameters.setRotation(180); // Jason: hack, my camera renders this upside down
+            Camera.Size size = getBestPreviewSize(width, height, parameters);
 
-			if (size != null) {
-				parameters.setPreviewSize(size.width, size.height);
-				parameters.setPictureFormat(PixelFormat.JPEG);
-				parameters.setJpegQuality(80);
+            if (size != null) {
+                parameters.setPreviewSize(size.width, size.height);
+                parameters.setPictureFormat(PixelFormat.JPEG);
+                parameters.setJpegQuality(80);
 
-				camera.setParameters(parameters);
-				camera.startPreview();
-				inPreview = true;
-			}
-		}
+                camera.setParameters(parameters);
+                camera.startPreview();
+                inPreview = true;
+            }
+        }
 
-		public void surfaceDestroyed(SurfaceHolder holder) {
-			// no-op
-		}
-	};
+        public void surfaceDestroyed(SurfaceHolder holder) {
+            // no-op
+        }
+    };
 
-	Camera.PictureCallback photoCallback = new Camera.PictureCallback() {
-		public void onPictureTaken(byte[] data, Camera camera) {
-			new SavePhotoTask().execute(data);
-			//camera.startPreview();
-			//inPreview = true;
-		}
-	};
+    Camera.PictureCallback photoCallback = new Camera.PictureCallback() {
+        public void onPictureTaken(byte[] data, Camera camera) {
+            new SavePhotoTask().execute(data);
+            //camera.startPreview();
+            //inPreview = true;
+        }
+    };
 
-	class SavePhotoTask extends AsyncTask<byte[], String, String> {
-		@Override
-		protected String doInBackground(byte[]... jpeg) {
-			File photo = new File(Environment.getExternalStorageDirectory(), "photo.jpg");
+    class SavePhotoTask extends AsyncTask<byte[], String, String> {
+        @Override
+        protected String doInBackground(byte[]... jpeg) {
+            File photo = new File(Environment.getExternalStorageDirectory(), "photo.jpg");
 
-			if (photo.exists()) {
-				photo.delete();
-			}
+            if (photo.exists()) {
+                photo.delete();
+            }
 
-			try {
-				FileOutputStream fos = new FileOutputStream(photo.getPath());
-				fos.write(jpeg[0]);
-				fos.close();
-				Intent result = new Intent();
+            try {
+                FileOutputStream fos = new FileOutputStream(photo.getPath());
+                fos.write(jpeg[0]);
+                fos.close();
+                Intent result = new Intent();
 
-				String id = null, latitude = null, longitude = null;
-				String[] parms = queryString.split("&");
-				for(String p : parms) {
-					String[] pair = p.split("=");
-					if(pair.length == 2) {
-						String name = pair[0].toLowerCase();
-						if(name.equals("id")) {
-							id = pair[1].trim();
-						}
-						if(name.equals("lat")) {
-							latitude = pair[1].trim();
-						}
-						if(name.equals("long")) {
-							longitude = pair[1].trim();
-						}
-					}
-				}
+                String id = null, latitude = null, longitude = null;
+                String[] parms = queryString.split("&");
+                for(String p : parms) {
+                    String[] pair = p.split("=");
+                    if(pair.length == 2) {
+                        String name = pair[0].toLowerCase();
+                        if(name.equals("id")) {
+                            id = pair[1].trim();
+                        }
+                        if(name.equals("lat")) {
+                            latitude = pair[1].trim();
+                        }
+                        if(name.equals("long")) {
+                            longitude = pair[1].trim();
+                        }
+                    }
+                }
 
-				result.putExtra(PATH, photo.getAbsolutePath());
-				result.putExtra(ID, id);
-				result.putExtra(LATITUDE, latitude);
-				result.putExtra(LONGITUDE, longitude);
-				setResult(Activity.RESULT_OK, result);
-				
-				finish();
-			} catch (java.io.IOException e) {
-				Log.e("Picture", "Exception in photoCallback", e);
-			}
+                result.putExtra(PATH, photo.getAbsolutePath());
+                result.putExtra(ID, id);
+                result.putExtra(LATITUDE, latitude);
+                result.putExtra(LONGITUDE, longitude);
+                setResult(Activity.RESULT_OK, result);
+                
+                finish();
+            } catch (java.io.IOException e) {
+                Log.e("Picture", "Exception in photoCallback", e);
+            }
 
-			return (null);
-		}
-	}
+            return (null);
+        }
+    }
 }

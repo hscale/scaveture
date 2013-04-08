@@ -12,50 +12,50 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class NewHuntDialog extends DialogBox {
 
-	private static NewHuntDialogUiBinder uiBinder = GWT.create(NewHuntDialogUiBinder.class);
-	
-	private boolean saved = false;
+    private static NewHuntDialogUiBinder uiBinder = GWT.create(NewHuntDialogUiBinder.class);
+    
+    private boolean saved = false;
 
-	interface NewHuntDialogUiBinder extends UiBinder<Widget, NewHuntDialog> {
-	}
-	
-	@UiField
-	TextArea descriptionText;
-	
-	@UiField
-	Button cancelButton;
-	
-	@UiField
-	Button saveButton;
+    interface NewHuntDialogUiBinder extends UiBinder<Widget, NewHuntDialog> {
+    }
+    
+    @UiField
+    TextArea descriptionText;
+    
+    @UiField
+    Button cancelButton;
+    
+    @UiField
+    Button saveButton;
 
-	public NewHuntDialog() {
-		setWidget(uiBinder.createAndBindUi(this));
-		setText("Describe the item to be found:");
-	    setGlassEnabled(true);
-	    addStyleDependentName("Big");
-	}
-	
-	public void clear() {
-		saved = false;
-		descriptionText.setText("");
-	}
-	
-	@UiHandler("cancelButton")
-	void doClickCancel(ClickEvent event) {
-		hide();
-	}
-	
-	@UiHandler("saveButton")
-	void doClickSave(ClickEvent event) {
-		saved = true;
-		hide();
-	}
+    public NewHuntDialog() {
+        setWidget(uiBinder.createAndBindUi(this));
+        setText("Describe the item to be found:");
+        setGlassEnabled(true);
+        addStyleDependentName("Big");
+    }
+    
+    public void clear() {
+        saved = false;
+        descriptionText.setText("");
+    }
+    
+    @UiHandler("cancelButton")
+    void doClickCancel(ClickEvent event) {
+        hide();
+    }
+    
+    @UiHandler("saveButton")
+    void doClickSave(ClickEvent event) {
+        saved = true;
+        hide();
+    }
 
-	public boolean isSaved() {
-		return saved;
-	}
-	
-	public String getDescription() {
-		return descriptionText.getText();
-	}
+    public boolean isSaved() {
+        return saved;
+    }
+    
+    public String getDescription() {
+        return descriptionText.getText();
+    }
 }

@@ -19,3 +19,8 @@ the real world for search. While it was nice to see my vision
 validated in this way, it was bittersweet in that my idea, as 
 pitched to Startup Weekend Seattle 2011, was not chosen for 
 the implementation phase. Alas.
+
+The service that implements "find hunts near you" employs a 
+technique known as geohashing. You can read more about it here:
+
+https://developers.google.com/maps/articles/geospatial

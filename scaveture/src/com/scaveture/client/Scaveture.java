@@ -158,8 +158,6 @@ public class Scaveture implements EntryPoint {
 						mapWidget.getInfoWindow().open(content.getMarker(), new InfoWindowContent(content.toHtml()));
 					}
 				}
-				
-				History.back();
 			}
 		});
 	}
@@ -365,6 +363,7 @@ public class Scaveture implements EntryPoint {
 				mappedMarkers.put(key, content);
 				// index the marker the first time we map it
 				indexMarker(content);
+				mapWidget.addOverlay(marker);
 			}
 			
 			if(shouldOpen) {
